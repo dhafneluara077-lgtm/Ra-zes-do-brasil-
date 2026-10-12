@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#173f35">
+<title>Raízes do Brasil — Quiz Cultural</title>
+<style>
+:root{--green:#173f35;--green2:#28624e;--cream:#fff8e9;--gold:#f0bd58;--ink:#18352d;--muted:#62756d;--white:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(135deg,#f7ecd5,#e5f0e5);color:var(--ink);min-height:100vh}
+header{background:var(--green);color:white;padding:18px 20px;text-align:center;border-bottom:5px solid var(--gold)}
+header .mark{font-size:28px}header h1{margin:4px 0;font-size:clamp(25px,5vw,38px)}header p{margin:0;color:#e7efdf}
+main{width:min(760px,92%);margin:26px auto 42px}.card{background:#fffdf7;border:1px solid #e2dccb;border-radius:22px;padding:clamp(18px,4vw,30px);box-shadow:0 12px 32px #173f3514}
+h2{margin-top:0}.intro{line-height:1.6;color:#496258}.tag{display:inline-block;background:#e6efe5;color:#285643;border-radius:999px;padding:6px 11px;font-size:13px;font-weight:700}
+label{display:block;font-weight:650;margin:16px 0 7px}input{width:100%;padding:13px 14px;border:1px solid #b8c9bc;border-radius:12px;font:inherit;background:white}
+button{font:inherit;font-weight:700;border:0;border-radius:12px;padding:13px 16px;cursor:pointer;background:var(--green2);color:white}button:hover{filter:brightness(1.07)}button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}.secondary{background:#e8efe8;color:var(--green)}.row{display:flex;gap:10px;flex-wrap:wrap}.row button{flex:1}.hidden{display:none!important}.question{font-size:clamp(20px,4vw,27px);line-height:1.3}.answers{display:grid;gap:10px;margin:18px 0}.answer{background:white;color:var(--ink);border:1px solid #c9d5c9;text-align:left}.answer.correct{border:2px solid #2e8057;background:#e8f5eb}.answer.wrong{border:2px solid #b95b4e;background:#fff0eb}.feedback{padding:14px;border-radius:12px;background:#eef3e9;line-height:1.5}.progress{height:8px;background:#e2e9df;border-radius:20px;overflow:hidden;margin:12px 0 20px}.bar{height:100%;background:var(--gold);width:0;transition:width .2s}.small{font-size:13px;color:var(--muted);line-height:1.5}.score{font-size:42px;font-weight:800;color:var(--green)}footer{text-align:center;padding:0 20px 28px;color:#60746a;font-size:13px}
+</style>
+</head>
+<body>
+<header><div class="mark" aria-hidden="true">🌿 🌞 🎶</div><h1>Raízes do Brasil</h1><p>Um quiz para celebrar a diversidade cultural</p></header>
+<main>
+<section class="card" id="home">
+<span class="tag">PROTÓTIPO 1.0</span>
+<h2>Vamos aprender jogando?</h2>
+<p class="intro">Explore conhecimentos sobre culturas africanas, afro-brasileiras e indígenas. Cada pergunta é uma oportunidade de aprender e respeitar histórias, tradições e povos diversos.</p>
+<label for="player">Seu apelido</label><input id="player" maxlength="20" placeholder="Como quer aparecer no jogo?">
+<div class="row" style="margin-top:16px"><button id="start">Começar o quiz</button><button class="secondary" id="roomBtn">Criar sala demonstrativa</button></div>
+<div id="room" class="feedback hidden" style="margin-top:14px"><b>Sala de demonstração</b><p>Seu código: <strong id="roomCode"></strong></p><p class="small">Este código é apenas visual neste protótipo. Para jogar com amigos em aparelhos diferentes, será necessário conectar o jogo a um serviço de multiplayer.</p><button class="secondary" id="copyCode">Copiar código</button></div>
+<p class="small">Você pode jogar sozinho nesta versão. O modo online com vários aparelhos será adicionado numa etapa posterior.</p>
+</section>
+<section class="card hidden" id="game">
+<div class="row" style="justify-content:space-between;align-items:center"><span class="tag" id="stage">Pergunta 1</span><b id="scoreLive">0 pontos</b></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<h2 class="question" id="question"></h2>
+<div class="answers" id="answers"></div>
+<div id="feedback" class="feedback hidden" aria-live="polite"></div>
+<button id="next" class="hidden" style="width:100%;margin-top:14px">Próxima pergunta →</button>
+<button id="quit" class="secondary" style="width:100%;margin-top:10px">Voltar ao início</button>
+</section>
+<section class="card hidden" id="result">
+<div style="font-size:42px">🏆</div><h2>Parabéns, <span id="finalName">explorador</span>!</h2><div class="score" id="finalScore">0</div><p id="resultMessage">Você terminou o quiz.</p><button id="again" style="width:100%">Jogar novamente</button><button class="secondary" id="homeBtn" style="width:100%;margin-top:10px">Tela inicial</button>
+</section>
+</main>
+<footer>Raízes do Brasil • Aprender, respeitar e celebrar a diversidade.</footer>
+<script>
+const questions=[
+{q:"Qual instrumento musical está muito associado à capoeira?",a:["Berimbau","Acordeão","Harpa"],c:0,why:"O berimbau é um instrumento central na capoeira, manifestação afro-brasileira que combina luta, música e movimento."},
+{q:"O que melhor descreve a diversidade dos povos indígenas no Brasil?",a:["Todos têm os mesmos costumes e a mesma língua","Existem muitos povos, com línguas, histórias e tradições diferentes","Suas culturas pertencem apenas ao passado"],c:1,why:"Os povos indígenas são diversos e contemporâneos; cada povo tem suas próprias histórias, conhecimentos e formas de viver."},
+{q:"Qual afirmação sobre o samba brasileiro é mais adequada?",a:["Tem importantes raízes africanas e afro-brasileiras","Foi criado exclusivamente na Europa","Não tem relação com a história do Brasil"],c:0,why:"O samba se desenvolveu no Brasil com importantes contribuições africanas e afro-brasileiras, em diferentes comunidades e épocas."},
+{q:"Como podemos valorizar culturas diferentes das nossas?",a:["Fazendo piadas com suas tradições","Tratando uma cultura como superior","Escutando seus representantes e respeitando suas histórias"],c:2,why:"Respeito cultural envolve ouvir as próprias comunidades, reconhecer suas contribuições e combater preconceitos."},
+{q:"Como muitos conhecimentos tradicionais são transmitidos entre gerações?",a:["Apenas por aplicativos","Pela oralidade, observação e prática, entre outras formas","Nunca são compartilhados com os mais jovens"],c:1,why:"A transmissão oral, a observação e a prática são formas importantes de compartilhar conhecimentos; os meios variam entre povos e comunidades."},
+{q:"Qual é uma boa maneira de aprender sobre culturas africanas?",a:["Lembrar que o continente reúne muitos povos e culturas diferentes","Supor que todos os países africanos têm os mesmos costumes","Estudar apenas uma tradição e generalizar para todo o continente"],c:0,why:"A África é um continente vasto, com grande diversidade de povos, línguas, histórias e expressões culturais."},
+{q:"O que significa combater a discriminação cultural?",a:["Impedir que as pessoas mantenham suas tradições","Respeitar a dignidade das pessoas e enfrentar preconceitos","Exigir que todos tenham os mesmos costumes"],c:1,why:"Combater a discriminação é tratar as pessoas com dignidade, enfrentar estereótipos e respeitar direitos e diferenças."}
+];
+let current=0,score=0,locked=false,playerName="Visitante";
+const $=id=>document.getElementById(id);
+function show(id){["home","game","result"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+function begin(){playerName=$("player").value.trim()||"Visitante";current=0;score=0;show("game");render()}
+function render(){locked=false;const item=questions[current];$("stage").textContent=`Pergunta ${current+1} de ${questions.length}`;$("scoreLive").textContent=`${score} pontos`;$("bar").style.width=`${current/questions.length*100}%`;$("question").textContent=item.q;$("answers").innerHTML="";$("feedback").classList.add("hidden");$("next").classList.add("hidden");item.a.forEach((answer,i)=>{const b=document.createElement("button");b.className="answer";b.textContent=String.fromCharCode(65+i)+". "+answer;b.onclick=()=>choose(i,b);$("answers").appendChild(b)})}
+function choose(i,btn){if(locked)return;locked=true;const item=questions[current];[...$("answers").children].forEach((b,j)=>{b.disabled=true;if(j===item.c)b.classList.add("correct")});if(i===item.c){score+=100;$("feedback").textContent="Muito bem! +100 pontos. "+item.why}else{btn.classList.add("wrong");$("feedback").textContent="Vamos aprender juntos. "+item.why}$("scoreLive").textContent=`${score} pontos`;$("feedback").classList.remove("hidden");$("next").textContent=current===questions.length-1?"Ver resultado →":"Próxima pergunta →";$("next").classList.remove("hidden")}
+function finish(){show("result");$("finalName").textContent=playerName;$("finalScore").textContent=score+" pontos";$("resultMessage").textContent=score===questions.length*100?"Excelente! Você acertou todas as perguntas. Continue explorando e aprendendo!":"Cada pergunta é uma oportunidade de aprender. Jogue novamente para praticar mais."; $("bar").style.width="100%"}
+$("start").onclick=begin;$("next").onclick=()=>{if(current<questions.length-1){current++;render()}else finish()};$("quit").onclick=()=>show("home");$("again").onclick=begin;$("homeBtn").onclick=()=>show("home");
+$("roomBtn").onclick=()=>{$("roomCode").textContent="RAIZ-"+Math.random().toString(36).slice(2,6).toUpperCase();$("room").classList.remove("hidden")};$("copyCode").onclick=async()=>{try{await navigator.clipboard.writeText($("roomCode").textContent);$("copyCode").textContent="Código copiado!"}catch(e){$("copyCode").textContent="Selecione e copie o código acima."}};
+</script>
+</body></html>
